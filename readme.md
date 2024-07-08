@@ -21,12 +21,12 @@ docker-compose ps
 Build and run the application
 ```
 mvn clean package
-java -jar target/gateway-application.jar
+java -jar target/gateway-0.0.1-SNAPSHOT.jar
 ```
-gateway-0.0.1-SNAPSHOT.jar
+
 ### Access Swagger UI
 
-API documentation:
+* API documentation:
 
 http://localhost:8080/swagger-ui/index.html
 
@@ -130,3 +130,25 @@ exit
 </command>
 ```
 
+### Sample Get statistics (GET /statistics/{userId}/sessions)
+* Request URL: http://localhost:8080/statistics/238485/sessions
+* Method: GET
+
+
+
+## Access the RabbitMQ Management UI
+* Open http://localhost:15672
+* Log in to RabbitMQ Management:
+
+Enter your RabbitMQ username and password. By default, the username is guest and the password is also guest.
+After successful login, you’ll see the RabbitMQ management dashboard.
+
+### View RabbitMQ logs:
+``
+docker-compose logs rabbitmq
+``
+
+### Check virtual hosts
+``
+Invoke-WebRequest -Uri "http://localhost:15672/api/vhosts" -Headers @{Authorization="Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("guest:guest"))}
+``

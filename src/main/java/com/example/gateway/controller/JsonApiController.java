@@ -30,9 +30,9 @@ public class JsonApiController {
     private RequestRepository requestRepository;
 
     @PostMapping("/insert")
-    @Operation(summary = "Insert a new command", description = "Insert a new command associated with a session")
+    @Operation(summary = "Insert a new command", description = "Create new session if it doesn't exist.Create new request and associate with session.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully inserted command"),
+            @ApiResponse(responseCode = "200", description = "Successfully inserted request"),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
@@ -41,17 +41,14 @@ public class JsonApiController {
 
         Session session;
         if (optionalSession.isEmpty()) {
-            // Create new session if it doesn't exist
             session = new Session();
             session.setSessionId(command.getSessionId());
             session.setUserId(command.getProducerId());
             sessionRepository.save(session);
         } else {
-            // Use existing session
             session = optionalSession.get();
         }
 
-        // Create new request and associate with session
         var request = new Request();
         request.setRequestId(command.getRequestId());
         request.setTimestamp(command.getTimestamp());
@@ -62,7 +59,7 @@ public class JsonApiController {
     }
 
     @PostMapping("/find")
-    @Operation(summary = "Find commands by session ID", description = "Find all commands associated with a session ID")
+    @Operation(summary = "Find commands by session ID", description = "Find all requests associated with a session ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully found commands", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
@@ -72,11 +69,9 @@ public class JsonApiController {
         Optional<Session> optionalSession = sessionRepository.findBySessionId(command.getSessionId());
 
         if (optionalSession.isEmpty()) {
-            // Handle no sessions found
             throw new RuntimeException("No sessions found with the sessionId: " + command.getSessionId());
         }
 
-        // Collect all requestIds from the found session
         return optionalSession.get().getRequests().stream()
                 .map(Request::getRequestId)
                 .collect(Collectors.toList());

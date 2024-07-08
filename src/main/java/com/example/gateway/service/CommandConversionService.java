@@ -1,7 +1,6 @@
 package com.example.gateway.service;
 
 import com.example.gateway.dto.CommandXmlDto;
-import com.example.gateway.dto.RequestJsonDto;
 import com.example.gateway.model.FindGetCommand;
 import com.example.gateway.model.InsertEnterCommand;
 import org.springframework.stereotype.Service;

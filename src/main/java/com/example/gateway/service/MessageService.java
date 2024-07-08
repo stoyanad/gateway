@@ -1,6 +1,7 @@
 package com.example.gateway.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class MessageService {
 
+    private final MessageQueueService messageQueueService;
+
+    private final LeastLoadedQueueService leastLoadedQueueService;
+
+    private final RedisCacheService redisCacheService;
+
     @Autowired
-    private MessageQueueService messageQueueService;
+    public MessageService(MessageQueueService messageQueueService, LeastLoadedQueueService leastLoadedQueueService, RedisCacheService redisCacheService) {
+        this.messageQueueService = messageQueueService;
+        this.leastLoadedQueueService = leastLoadedQueueService;
+        this.redisCacheService = redisCacheService;
+    }
 
     public void sendInsertCommandMessage(String requestId, long timestamp, String producerId, String sessionId) throws Exception {
         Map<String, Object> message = createBaseMessage("InsertCommand");
@@ -23,18 +35,18 @@ public class MessageService {
         sendMessage(message);
     }
 
-    public void sendFindCommandMessage(String requestId, String sessionId) throws Exception {
+    public void sendFindCommandMessage(String requestId, String sessionId) {
         Map<String, Object> message = createBaseMessage("FindCommand");
         Map<String, Object> data = createFindCommandData(requestId, sessionId);
         message.put("data", data);
-        sendMessage(message);
+        sendToLeastLoadedQueue(message);
     }
 
-    public void sendSessionIdsMessage(String userId, List<String> sessionIds) throws Exception {
+    public void sendSessionIdsMessage(String userId, List<String> sessionIds) {
         Map<String, Object> message = createBaseMessage("SessionIdsMessage");
         Map<String, Object> data = createSessionIdsData(userId, sessionIds);
         message.put("data", data);
-        sendMessage(message);
+        sendToLeastLoadedQueue(message);
     }
 
     private Map<String, Object> createBaseMessage(String type) {
@@ -76,8 +88,35 @@ public class MessageService {
         return metadata;
     }
 
-    private void sendMessage(Map<String, Object> message) throws Exception {
-        String messageString = new ObjectMapper().writeValueAsString(message);
-        messageQueueService.sendMessage(messageString);
+    void sendMessage(Map<String, Object> message) throws Exception {
+        var messageString = new ObjectMapper().writeValueAsString(message);
+        try {
+            messageQueueService.sendMessage(messageString);
+            log.info("Sent message: {}", message);
+        } catch (Exception e) {
+            log.error("Failed to send message: {}", message, e);
+            throw e;
+        }
     }
+
+    void sendToLeastLoadedQueue(Map<String, Object> message) {
+        var leastLoadedQueue = leastLoadedQueueService.determineLeastLoadedQueueAndIncrementLoad();
+        message.put("queueName", leastLoadedQueue);
+
+        try {
+            sendMessage(message);
+        } catch (Exception e) {
+            log.error("Failed to send message.{}", e.getMessage());
+            decrementQueueLoad(leastLoadedQueue);
+        }
+    }
+
+    public void decrementQueueLoad(String queueName) {
+        var currentLoad = redisCacheService.getQueueLoad(queueName);
+        if (currentLoad != null && currentLoad > 0) {
+            redisCacheService.saveQueueLoad(queueName, currentLoad - 1);
+            log.info("Decremented queue load for {}: {}", queueName, currentLoad - 1);
+        }
+    }
+
 }

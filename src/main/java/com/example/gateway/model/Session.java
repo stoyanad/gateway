@@ -28,10 +28,12 @@ public class Session implements Serializable {
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Request> requests = new HashSet<>();
 
+    /**
+     * Associate the request with this session.
+     * Add the request to the set of requests for this session.
+     */
     public void addRequest(Request request) {
-        // Associate the request with this session
         request.setSession(this);
-        // Add the request to the set of requests for this session
         this.requests.add(request);
     }
 

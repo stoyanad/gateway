@@ -13,7 +13,4 @@ public class GetCommand {
         return session;
     }
 
-    public void setSession(String session) {
-        this.session = session;
-    }
 }
