@@ -1,0 +1,372 @@
+{
+	"info": {
+		"_postman_id": "366cbba7-9a10-480d-9c15-18d360a8babc",
+		"name": "Gateway app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1466293"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/xml_api/command",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n<command id=\"1234\">\r\n    <enter session=\"13617162\">\r\n        <timestamp>1586335186721</timestamp>\r\n        <player>238485</player>\r\n    </enter>\r\n</command>\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/xml_api/command",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"xml_api",
+						"command"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/json_api/insert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n\"requestId\": \"b89577fe-8c37-4962-8af3-7cb89a245160\",\r\n\"timestamp\": 1586335186721,\r\n\"producerId\": \"1234\",\r\n\"sessionId\": 47966003032113150\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/json_api/insert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"json_api",
+						"insert"
+					]
+				},
+				"description": "get command"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/json_api/find",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n\"requestId\": \"b89577fe-8c37-4962-8af3-7cb89a245160\",\r\n\"sessionId\": \"47966003032113150\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/json_api/find",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"json_api",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/xml_api/command",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n<command id=\"1234-8785\">\r\n  <get session=\"13617162\" />\r\n</command>\r\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/xml_api/command",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"xml_api",
+						"command"
+					]
+				},
+				"description": "get"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/statistics/1234/sessions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/statistics/1234/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"statistics",
+						"1234",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/json_api/insert2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"requestId\": \"d37c5fba-12a4-48e3-ae99-f4d2be1a1c8e\",\r\n  \"timestamp\": 1591234567890,\r\n  \"producerId\": \"5678\",\r\n  \"sessionId\": \"12345678901234567\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/json_api/insert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"json_api",
+						"insert"
+					]
+				},
+				"description": "test2"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/json_api/insert3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"requestId\": \"a9b8c7d6-e5f4-3g2h-1i0j-k1l2m3n4o5p6\",\r\n  \"timestamp\": 1609876543210,\r\n  \"producerId\": \"91011\",\r\n  \"sessionId\": \"23456789012345678\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/json_api/insert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"json_api",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/json_api/find2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"requestId\": \"d37c5fba-12a4-48e3-ae99-f4d2be1a1c8e\",\r\n  \"sessionId\": \"12345678901234567\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/json_api/find",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"json_api",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/json_api/find3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"requestId\": \"a9b8c7d6-e5f4-3g2h-1i0j-k1l2m3n4o5p6\",\r\n  \"sessionId\": \"23456789012345678\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/json_api/find",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"json_api",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/xml_api/command2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<command id=\"5678\">\r\n  <enter session=\"98765432\">\r\n    <timestamp>1591234567890</timestamp>\r\n    <player>123456</player>\r\n  </enter>\r\n</command>\r\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/xml_api/command",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"xml_api",
+						"command"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/xml_api/command3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<command id=\"5678-1234\">\r\n  <get session=\"98765432\" />\r\n</command>\r\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/xml_api/command",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"xml_api",
+						"command"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<command id=\"5678-1234\">\r\n  <get session=\"98765432\" />\r\n</command>\r\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/statistics/123456/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"statistics",
+						"123456",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

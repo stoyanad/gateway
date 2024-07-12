@@ -13,36 +13,27 @@ import java.util.List;
 public class GatewayService {
 
     private final SessionService sessionService;
-    private final MessageService messageService;
 
     @Autowired
-    public GatewayService(SessionService sessionService, MessageService messageService) {
+    public GatewayService(SessionService sessionService) {
         this.sessionService = sessionService;
-        this.messageService = messageService;
     }
 
-    public void processInsertEnterCommand(InsertEnterCommand command) throws Exception {
+    public void processInsertEnterCommand(InsertEnterCommand command) {
         log.info("Processing InsertEnterCommand for sessionId: {}", command.getSessionId());
 
         sessionService.handleInsertEnterCommand(command);
-        messageService.sendInsertCommandMessage(command.getRequestId(), command.getTimestamp(), command.getUserId(), command.getSessionId());
     }
 
     public List<String> processFindGetCommand(FindGetCommand command) {
         log.info("Processing FindGetCommand for sessionId: {}", command.getSessionId());
 
-        List<String> requestIds = sessionService.handleFindGetCommand(command);
-        messageService.sendFindCommandMessage(command.getRequestId(), command.getSessionId());
-
-        return requestIds;
+        return sessionService.handleFindGetCommand(command);
     }
 
     public List<String> findSessionIdsByUserId(String userId) {
         log.info("Finding session IDs for userId: {}", userId);
 
-        List<String> sessionIdsByUserId = sessionService.handleFindSessionIdsByUserId(userId);
-        messageService.sendSessionIdsMessage(userId, sessionIdsByUserId);
-
-        return sessionIdsByUserId;
+        return sessionService.handleFindSessionIdsByUserId(userId);
     }
 }

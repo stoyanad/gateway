@@ -15,10 +15,12 @@ public class ResponseService {
         this.responseRepository = responseRepository;
     }
 
-    public void saveResponse(String queueKey, String response) {
+    public void saveResponse(String queueKey, String requestId, String response) {
         ResponseEntity responseEntity = new ResponseEntity();
         responseEntity.setQueueKey(queueKey);
+        responseEntity.setRequestId(requestId);
         responseEntity.setResponse(response);
+
         responseRepository.save(responseEntity);
     }
 }

@@ -1,25 +1,36 @@
 package com.example.gateway.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Configuration
 public class RabbitMQConfig {
-    public static final String QUEUE_INSTANCE = "queue_instance_";
-    @Value("${rabbitmq.other_internal_service.instances}")
-    private int instances;
 
     @Bean
-    public List<Queue> queues() {
-        List<Queue> queues = new ArrayList<>();
-        for (int i = 1; i <= instances; i++) {
-            queues.add(new Queue(QUEUE_INSTANCE + i));
-        }
-        return queues;
+    public Queue queueInstance1() {
+        return new Queue("queue_instance_1", true);
     }
+
+    @Bean
+    public Queue queueInstance2() {
+        return new Queue("queue_instance_2", true);
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, Jackson2JsonMessageConverter jsonMessageConverter) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(jsonMessageConverter);
+        return rabbitTemplate;
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter jsonMessageConverter(ObjectMapper objectMapper) {
+        return new Jackson2JsonMessageConverter(objectMapper);
+    }
+
 }

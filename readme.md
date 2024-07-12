@@ -134,7 +134,11 @@ exit
 * Request URL: http://localhost:8080/statistics/238485/sessions
 * Method: GET
 
-
+### Import Postman collection and run it
+``
+src/main/resources/Gateway app.postman_collection.json
+``
+![img_2.png](img_2.png)
 
 ## Access the RabbitMQ Management UI
 * Open http://localhost:15672
@@ -142,6 +146,7 @@ exit
 
 Enter your RabbitMQ username and password. By default, the username is guest and the password is also guest.
 After successful login, you’ll see the RabbitMQ management dashboard.
+![img_1.png](img_1.png)
 
 ### View RabbitMQ logs:
 ``
@@ -152,3 +157,7 @@ docker-compose logs rabbitmq
 ``
 Invoke-WebRequest -Uri "http://localhost:15672/api/vhosts" -Headers @{Authorization="Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("guest:guest"))}
 ``
+
+### Check saved responses in Postgres
+SELECT * FROM response_entity;
+![img.png](img.png)

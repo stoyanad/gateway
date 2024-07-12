@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -26,18 +25,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(XmlApiController.class)
 public class XmlApiControllerTest {
 
-    public static final String ENTER_REQUEST = "\n" +
-            "<command id=\"1234\">\n" +
-            "    <enter session=\"13617162\">\n" +
-            "        <timestamp>1586335186721</timestamp>\n" +
-            "        <player>238485</player>\n" +
-            "    </enter>\n" +
-            "</command>";
+    public static final String ENTER_REQUEST = """
 
-    public static final String GET_REQUEST = "\n" +
-            "<command id=\"1234-8785\">\n" +
-            "   <get session=\"13617162\" />\n" +
-            "</command>";
+            <command id="1234">
+                <enter session="13617162">
+                    <timestamp>1586335186721</timestamp>
+                    <player>238485</player>
+                </enter>
+            </command>""";
+
+    public static final String GET_REQUEST = """
+
+            <command id="1234-8785">
+               <get session="13617162" />
+            </command>""";
 
     @Autowired
     private MockMvc mockMvc;

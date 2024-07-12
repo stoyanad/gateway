@@ -16,15 +16,12 @@ public class GatewayServiceTest {
     @MockBean
     private SessionService sessionService;
 
-    @MockBean
-    private MessageService messageService;
-
     private GatewayService gatewayService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        gatewayService = new GatewayService(sessionService, messageService);
+        gatewayService = new GatewayService(sessionService);
     }
 
     @Test
@@ -41,11 +38,10 @@ public class GatewayServiceTest {
 
         // Then
         verify(sessionService).handleInsertEnterCommand(command);
-        verify(messageService).sendInsertCommandMessage(command.getRequestId(), command.getTimestamp(), command.getUserId(), command.getSessionId());
     }
 
     @Test
-    public void processFindGetCommand_shouldDelegateToSessionServiceAndSendMessage() throws Exception {
+    public void processFindGetCommand_shouldDelegateToSessionServiceAndSendMessage() {
         // Given
         FindGetCommand command = new FindGetCommand();
         command.setSessionId("testSessionId");
@@ -56,11 +52,10 @@ public class GatewayServiceTest {
 
         // Then
         verify(sessionService).handleFindGetCommand(command);
-        verify(messageService).sendFindCommandMessage(command.getRequestId(), command.getSessionId());
     }
 
     @Test
-    public void findSessionIdsByUserId_shouldDelegateToSessionServiceAndSendMessage() throws Exception {
+    public void findSessionIdsByUserId_shouldDelegateToSessionServiceAndSendMessage() {
         // Given
         String userId = "testUserId";
 
@@ -69,6 +64,5 @@ public class GatewayServiceTest {
 
         // Then
         verify(sessionService).handleFindSessionIdsByUserId(userId);
-        verify(messageService).sendSessionIdsMessage(eq(userId), any());
     }
 }

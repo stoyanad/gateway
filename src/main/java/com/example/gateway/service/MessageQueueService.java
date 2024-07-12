@@ -4,4 +4,6 @@ public interface MessageQueueService {
 
     void sendMessage(String message);
 
+    String fetchMessage(String queueKey);
+
 }
